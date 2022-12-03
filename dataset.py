@@ -62,7 +62,7 @@ class CustomDataset(torch.utils.data.Dataset):
         if cfg.channels == 1, need to change alb transform methods
         """
         idx = idx % len(self.images)
-        image = cv2.imread(str(Path(self.cfg.image_dir) / self.images[idx]))
+        image = cv2.imread(str(self.images[idx]))
         text = self.texts[idx]
         return image, text
 
