@@ -51,7 +51,8 @@ if __name__ == "__main__":
 
     cfg.num_train_step = len(train_dataloader)
     model = SwinTransformerOCR(cfg, tokenizer)
-
+    # model = model.load_from_checkpoint(cfg.resume_train, cfg = cfg, tokenizer=tokenizer)
+    # print(model)
     logger = CustomTensorBoardLogger("tb_logs", name="model", version=cfg.version,
                                      default_hp_metric=False)
 
@@ -72,6 +73,8 @@ if __name__ == "__main__":
                          num_sanity_val_steps=1,
                          strategy=strategy,
                          callbacks=[ckpt_callback, lr_callback],
+                        #  resume_from_checkpoint=False)
                          resume_from_checkpoint=cfg.resume_train if cfg.resume_train else None)
 
     trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=valid_dataloader)
+    trainer.save_checkpoint(f"{cfg.save_path}/version_{cfg.version}/final.ckpt")

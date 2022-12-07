@@ -80,6 +80,7 @@ checkpoints/
 test_images/
 tb_logs/
 dataset/
+get_val_data.py
 
 # IPython
 profile_default/

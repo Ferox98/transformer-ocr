@@ -1,7 +1,7 @@
 # Input/Output/Name
 image_dir: "dataset/images"
-train_data: "dataset/train.txt"
-val_data: "dataset/val.txt"
+train_data: "dataset/train_iam_lines.txt"
+val_data: "dataset/test_iam_lines.txt"
 tokenizer: "dataset/tokenizer.pkl"
 save_path: "checkpoints"
 name: "transformer-ocr test"
@@ -34,10 +34,10 @@ encoder_depth: [2, 6, 2]
 encoder_heads: [6, 12, 24]
 
 # Decoder
-max_seq_len: 32
+max_seq_len: 128
 decoder_dim: 384
 decoder_heads: 8
-decoder_depth: 4
+decoder_depth: 12
 decoder_cfg: 
   cross_attend: true
   ff_glu: false

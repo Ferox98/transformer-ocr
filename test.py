@@ -8,28 +8,26 @@ from models import SwinTransformerOCR
 from dataset import CustomCollate, CustomDataset
 from datasets import load_metric
 import pandas as pd
+from torch.utils.data import DataLoader
 
-def compute_metrics(df):
-    
-    print(df.head(5))
-    target = df[0].to_list()
-    labels = df[1].to_list()
-    pred=[]
-    print(f'some image dirs: {target[:10]}')
-    print('entring loop ...')
-    print(len(target))
-    for i,img in enumerate(target):
-        print(i)
-        x = collate.ready_image(Path(img))
-        pred.append(model.predict(x))
-    print('loading metrics')   
+def compute_metrics(model, test):
+
     cer_metric = load_metric("cer")
+    cer=0
+    print('entring loop ...')
+    for data in test:
+            features, labels = data
+            features, labels = features, tokenizer.decode(labels[0])
+            print(model(features))
+            # print('computing cer')
+            # cer += cer_metric.compute(predictions=model.predict(features), references=labels)
+
+    
     # bleu_metric = load_metric('bleu')
-    print('computing cer')
-    cer = cer_metric.compute(predictions=pred, references=labels)
+   
 #     bleu = bleu_metric.compute(predictions=list(pred_str), references=list(list(label_str)))
 
-    return {"cer":cer}
+    return True
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -46,6 +44,12 @@ if __name__ == "__main__":
     cfg = load_setting(args.setting)
     cfg.update(vars(args))
     print("setting:", cfg)
+
+    tokenizer = load_tokenizer(cfg.load_tokenizer)
+    val_set = CustomDataset(cfg, cfg.val_data)
+    val_collate = CustomCollate(cfg, tokenizer, is_train=False)
+    val_dataloader = DataLoader(val_set, batch_size=128,
+                                  num_workers=16, collate_fn=val_collate)
     
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -59,17 +63,16 @@ if __name__ == "__main__":
     df = pd.read_csv(cfg.val_data, sep="\t", header=None)
 
     target = Path(cfg.target)
-    if target.is_dir():
-        target = list(target.glob("*.jpeg")) + list(target.glob("*.png"))
-    else:
-        target = [target]
+    # if target.is_dir():
+    #     target = list(target.glob("*.jpg")) + list(target.glob("*.png"))
+    # else:
+    #     target = [target]
 
-    for image_fn in target:
-        print(image_fn)
-        start = time.time()
-        x = collate.ready_image(image_fn)
-        print("[{}]sec | {} : {}".format(time.time()-start, image_fn, model.predict(x)))
+    # for image_fn in target:
+    #     start = time.time()
+    #     x = collate.ready_image(image_fn)
+    #     print("[{}]sec | {} : {}".format(time.time()-start, image_fn, model.predict(x)))
 
-    # print(compute_metrics(df))
+    print(compute_metrics(model, val_dataloader))
 
 

@@ -62,7 +62,7 @@ class CustomDataset(torch.utils.data.Dataset):
         if cfg.channels == 1, need to change alb transform methods
         """
         idx = idx % len(self.images)
-        image = cv2.imread(str(self.images[idx]))
+        image = cv2.imread(self.images[idx])
         text = self.texts[idx]
         return image, text
 
@@ -118,7 +118,8 @@ class CustomCollate(object):
 
     def ready_image(self, image):
         if isinstance(image, Path):
-            image = np.array(Image.open(image))
+            image = np.array(Image.open(image).convert("RGB"))
+            # print(image.shape)
         elif isinstance(image, Image.Image):
             image = np.array(image)
         elif isinstance(image, np.ndarray):
