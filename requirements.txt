@@ -1,4 +1,5 @@
 absl-py==0.15.0
+torch==1.8.1
 aiohttp==3.8.0
 aiosignal==1.2.0
 albumentations==1.1.0
@@ -9,7 +10,7 @@ certifi==2020.12.5
 charset-normalizer==2.0.7
 colorama==0.4.4
 cycler==0.11.0
-datasets==2.6.1
+datasets
 easydict==1.9
 einops==0.3.2
 entmax==1.0
@@ -61,11 +62,9 @@ tensorboard-plugin-wit==1.8.0
 threadpoolctl==3.0.0
 tifffile==2021.11.2
 timm==0.4.12
-torch==1.8.1
 torchmetrics==0.6.0
 torchvision==0.9.1
 transformers==4.24.0
-datasets==
 tqdm==4.62.3
 typing-extensions==3.7.4.3
 urllib3==1.26.7

@@ -20,6 +20,18 @@ transformer if pretrained sufficiently. We believe the results we obtained are p
 warrant additional investigation into the use of efficient transformer models in OCR for low-resource
 environments.
 
+## Prepare the environment 
+```bash
+conda create -n trocr python=3.9 
+conda activate trocr
+```
+```bash
+pip install torch==1.8.1
+```
+```bash
+pip install -r requirments.txt
+```
+
 ## Data
 For pretraining
 Download Ground truth files and IIIT-HWS image corpus from the iiit-dataset and extract in the dataset/iiit directory
