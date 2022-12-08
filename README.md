@@ -1,5 +1,5 @@
 # Transformers for ocr
-[TrOCR] (https://arxiv.org/abs/2109.10282) 
+[TrOCR](https://arxiv.org/abs/2109.10282) 
 [swin-transformer](https://arxiv.org/abs/2103.14030) 
 
 ## Overview
